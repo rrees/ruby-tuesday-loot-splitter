@@ -1,0 +1,5 @@
+h1. Loot Splitter
+
+This is an attempt to solve "Ruby Quiz #61"(http://rubyquiz.com/quiz65.html) in Ruby followed by several other languages to compare different languages and their approaches.
+
+The Loot Splitting solution is not trivial so any acceptable heuristic would be fine for a solution.
