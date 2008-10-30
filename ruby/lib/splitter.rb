@@ -1,4 +1,4 @@
 
 class Splitter
-
+	
 end
