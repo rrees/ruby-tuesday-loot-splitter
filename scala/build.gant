@@ -1,0 +1,18 @@
+
+def buildDir = 'gant'
+def libDir = 'lib'
+
+target(init: 'Initialise the build environment') {
+	def dirs = [buildDir]
+	dirs.each() { Ant.mkdir(dir: it) }
+}
+
+target(specs: 'Run specification tests') {
+	depends(compile)
+}
+
+target(compile: 'Compile all source files') {
+	depends(init)
+}
+
+setDefaultTarget(specs)
