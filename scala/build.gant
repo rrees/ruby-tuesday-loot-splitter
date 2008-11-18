@@ -1,18 +1,86 @@
 
 def buildDir = 'gant'
 def libDir = 'lib'
+def testLibDir = "${libDir}/test"
+def srcDir = 'src'
+def distDir = 'dist'
+def specDir = 'spec'
+def classesDir = "${buildDir}/src/classes"
+def testClassesDir = "${buildDir}/test/classes"
+
+def appJar = 'loot-splitter.jar'
+
+// Define the Scala Tasks
+
+def scalaPath = Ant.path(id: 'scala.classpath') {
+	pathelement(location: "${libDir}/scala-compiler.jar")
+	pathelement(location: "${libDir}/scala-library.jar")
+}
+
+def appPath = Ant.path(id: 'app.classpath') {
+	pathelement(location: "${distDir}/${appJar}")
+}
+
+def testPath = Ant.path(id: 'test.classpath') {
+	pathelement(location: "${libDir}/specs-1.4.0.jar")
+	pathelement(location: "${testLibDir}/junit-dep-4.5.jar")
+	pathelement(location: "${testClassesDir}")
+}
+
+def scalaTasks = Ant.taskdef(resource: 'scala/tools/ant/antlib.xml') {
+	classpath(refid: 'scala.classpath')
+}
 
 target(init: 'Initialise the build environment') {
-	def dirs = [buildDir]
+	def dirs = [buildDir, classesDir, distDir, testClassesDir]
 	dirs.each() { Ant.mkdir(dir: it) }
 }
 
 target(specs: 'Run specification tests') {
-	depends(compile)
+	depends(jar)
+
+	java(classname: 'allSpecsRunner', fork: 'true') {
+		classpath() {
+			path(refid: 'scala.classpath')
+			path(refid: 'test.classpath')
+		}
+	}
 }
 
 target(compile: 'Compile all source files') {
 	depends(init)
+	depends(compileApp)
+	depends(compileTests)
+}
+
+target(compileApp : 'Compile the application code') {
+	scalac (srcdir: srcDir, destdir: classesDir) {
+		classpath() {
+			path(refid: 'scala.classpath')
+			path(refid: 'app.classpath')
+		}
+		include(name: '**/*.scala')
+	}
+}
+
+target(compileTests: 'Compile all test source files') {
+	depends(init)
+	scalac (srcdir: specDir, destdir: testClassesDir) {
+		classpath() {
+			path(refid: 'scala.classpath')
+			path(refid: 'test.classpath')
+		}
+		include(name: '**/*.scala')
+	}
+}
+
+target(jar: 'Create distribution jars') {
+	depends(compile)
+	jar(destfile: "${distDir}/${appJar}") {
+		fileset(dir: classesDir) {
+			include(name: "**/*.class")
+		}
+	}
 }
 
 setDefaultTarget(specs)
