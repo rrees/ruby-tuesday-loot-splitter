@@ -10,5 +10,9 @@ package gems {
 		def totalValue(): Int = {
 			( 0 /: gems.map (_.value)) (_ + _)
 		}
+		
+		def foreach(function: (Gem) => Unit): Unit = {
+			gems.foreach(function)
+		}
 	}
 }
