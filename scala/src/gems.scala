@@ -9,7 +9,7 @@ package gems {
 		
 		def totalValue(): Int = {
 			val gemValues = gems.map (_.value)
-			( 0 /: gemValues) (_ + _)
+			( 0 foldRight gemValues) (_ + _)
 		}
 	}
 }
