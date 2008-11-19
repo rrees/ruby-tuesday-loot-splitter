@@ -17,6 +17,10 @@ def scalaPath = Ant.path(id: 'scala.classpath') {
 	pathelement(location: "${libDir}/scala-library.jar")
 }
 
+def sourcePath = Ant.path(id: 'source.classpath') {
+	pathelement(location: srcDir)
+}
+
 def appPath = Ant.path(id: 'app.classpath') {
 	pathelement(location: "${distDir}/${appJar}")
 }
@@ -25,6 +29,7 @@ def testPath = Ant.path(id: 'test.classpath') {
 	pathelement(location: "${libDir}/specs-1.4.0.jar")
 	pathelement(location: "${testLibDir}/junit-dep-4.5.jar")
 	pathelement(location: "${testClassesDir}")
+	pathelement(location: classesDir)
 }
 
 def scalaTasks = Ant.taskdef(resource: 'scala/tools/ant/antlib.xml') {
@@ -37,7 +42,7 @@ target(init: 'Initialise the build environment') {
 }
 
 target(specs: 'Run specification tests') {
-	depends(jar)
+	depends(dist)
 
 	java(classname: 'allSpecsRunner', fork: 'true') {
 		classpath() {
@@ -57,7 +62,6 @@ target(compileApp : 'Compile the application code') {
 	scalac (srcdir: srcDir, destdir: classesDir) {
 		classpath() {
 			path(refid: 'scala.classpath')
-			path(refid: 'app.classpath')
 		}
 		include(name: '**/*.scala')
 	}
@@ -74,13 +78,13 @@ target(compileTests: 'Compile all test source files') {
 	}
 }
 
-target(jar: 'Create distribution jars') {
+target(dist: 'Create distribution jars') {
 	depends(compile)
-	jar(destfile: "${distDir}/${appJar}") {
-		fileset(dir: classesDir) {
-			include(name: "**/*.class")
-		}
-	}
+	jar(destfile: "${distDir}/${appJar}", basedir: classesDir)
+}
+
+target (clean: 'Clean the build environment') {
+	Ant.delete(dir: buildDir)
 }
 
 setDefaultTarget(specs)
