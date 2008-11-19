@@ -1,7 +1,8 @@
 
 package gems {
 	
-	class Gem(value: Int) {
+	class Gem(aValue: Int) {
+		def value: Int = aValue
 	}
 
 	class GemBag(gems: Array[Gem]) {}
