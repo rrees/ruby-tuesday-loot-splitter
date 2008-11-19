@@ -6,6 +6,9 @@ object GemSpec extends Specification {
 		new Gem(5)
 	}
 	
+	"Gem must have a value" in {
+		new Gem(5).value.shouldBe 5
+	}
 }
 
 object GemBagSpec extends Specification {
