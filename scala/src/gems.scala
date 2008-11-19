@@ -8,8 +8,7 @@ package gems {
 	class GemBag(gems: Array[Gem]) {
 		
 		def totalValue(): Int = {
-			val gemValues = gems.map (_.value)
-			( 0 foldRight gemValues) (_ + _)
+			( 0 /: gems.map (_.value)) (_ + _)
 		}
 	}
 }
