@@ -13,13 +13,14 @@ object GemSpec extends Specification {
 
 object GemBagSpec extends Specification {
 
-	val exampleGemBag = new GemBag(Array(new Gem(3), new Gem(4)))
+	val exampleGemBag = new GemBag(Array(new Gem(3), new Gem(4), new Gem(6)))
 
 	"GemBag must take a list of integers" in {
 		new GemBag(Array(new Gem(1), new Gem(2), new Gem(3), new Gem(4)))
 	}
 	
 	"GemBag must have a total value" in {
-		exampleGemBag.totalValue mustBe 7
+		exampleGemBag.totalValue mustBe 13
 	}
+	
 }
