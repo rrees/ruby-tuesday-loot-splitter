@@ -23,14 +23,19 @@ object GemBagSpec extends Specification {
 		exampleGemBag.totalValue mustBe 13
 	}
 	
-	"Gem Bag should allow iteration over its gems" in {
-		val gems: List[Gem] = List()
-		exampleGemBag.foreach((gem: Gem) => gems ::: List(gem))
+	"Gem Bag should have a list of gems" in {
+		val gemValues = exampleGemBag gems() map((gem: Gem) => gem.value)
 		
-		val gemValues = List()
-		gems.foreach((gem: Gem) => gemValues ::: List(gem))
+		gemValues.length mustBe 3
 		
 		List(3, 4, 6).foreach((x: Int) => gemValues must contain(x))
 	}
 	
+	"Gem Bag should accept more gems" in {
+		var gemBag = new GemBag(Array(new Gem(7)))
+		gemBag = gemBag.add(new Gem(13))
+		
+		gemBag.totalValue mustBe 20
+	}
+		
 }

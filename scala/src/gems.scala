@@ -5,14 +5,22 @@ package gems {
 		def value: Int = aValue
 	}
 
-	class GemBag(gems: Array[Gem]) {
+	class GemBag(someGems: List[Gem]) {
+		
+		def add(aGem: Gem) : GemBag = {
+			new GemBag(someGems ::: List(aGem))
+		}
 		
 		def totalValue(): Int = {
-			( 0 /: gems.map (_.value)) (_ + _)
+			( 0 /: someGems.map (_.value)) (_ + _)
 		}
 		
 		def foreach(function: (Gem) => Unit): Unit = {
-			gems.foreach(function)
+			someGems.foreach(function)
+		}
+		
+		def gems() : List[Gem] = {
+			someGems
 		}
 	}
 }

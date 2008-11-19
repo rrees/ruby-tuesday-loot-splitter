@@ -11,11 +11,21 @@ package splitter {
 				return List[GemBag]()
 			}
 			
-			val partShares: List[GemBag] = List.make(shares, new GemBag(Array()))
+			val individualShareValue = gembag.totalValue / shares
 			
+			var partShares: List[GemBag] = List.make(shares, new GemBag(List()))
 			
+			gembag.gems.sort(_.value > _.value).foreach((gem: Gem) => {
+				assignGemToBag(gem, partShares)
+				partShares = partShares.sort(_.totalValue < _.totalValue)
+				partShares = List(partShares(0) add gem) ::: (partShares drop 1)
+			})
 			
 			partShares
+		}
+		
+		private def assignGemToBag(gem:Gem,  bags: List[GemBag]): List[GemBag] = {
+			bags
 		}
 	}
 }
