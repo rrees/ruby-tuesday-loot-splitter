@@ -19,4 +19,12 @@ object SplitterSpecification extends Specification {
 	"Splitter must return a list of shares if the loot can be split" in {
 		LootSplitter.splitLoot(splittableLoot, 3).length mustBe 3
 	}
+	
+	"Shares returned for splittable loot should be equal" in {
+		val shares = LootSplitter.splitLoot(splittableLoot,3)
+		val firstShareValue = shares(0).totalValue
+		
+		shares.foreach((share: GemBag) => share.totalValue mustBe firstShareValue) 
+	}
+	
 }
