@@ -27,4 +27,8 @@ object SplitterSpecification extends Specification {
 		shares.foreach((share: GemBag) => share.totalValue mustBe firstShareValue) 
 	}
 	
+	"Share value must be as expected" in {
+		LootSplitter.splitLoot(splittableLoot, 3)(0).totalValue mustBe 7
+	}
+
 }
