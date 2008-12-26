@@ -1,6 +1,6 @@
 use ("ispec")
+use("gem")
 
-Gem = Origin mimic
 
 describe(Gem,
 	it("should have a value",
